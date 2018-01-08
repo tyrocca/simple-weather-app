@@ -26,6 +26,9 @@ class City(models.Model):
     city_name = models.CharField(max_length=255)
     state = models.ForeignKey(State, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ["city_name"]
+
     def __str__(self):
         return "{}, {}".format(self.city_name, self.state.abbrev)
 
