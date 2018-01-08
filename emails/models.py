@@ -111,7 +111,7 @@ class City(models.Model):
 
     def make_plaintext(self, report):
         """ method that generates the email plaintext """
-        return "The weather in {} is {}. It feels like {}".format(
+        return "The weather in {} is {}. It feels like {}.".format(
             self.__str__(),
             report.get("temp_string", "N/A"),
             report.get("feels_like", "N/A"),
