@@ -31,4 +31,10 @@ On the server side I have three models:
 ### Sending Emails
 
 To send emails the user needs to send by running `python manage.py runscript send_emails`. This will send emails to all of the
-validated users. We only make one request per city and generate the email text once per city to be as efficient as possible. If we were scaling this up we could even use threads. I had to make a throwaway gmail account for sending these emails, but ideally I would have used an email service like sparkpost and done my substitutions through them.
+validated users. We only make one request per city and generate the email text once per city to be as efficient as possible. If we were scaling this up we could even use threads. I had to make a throwaway gmail account for sending these emails, but ideally I would have used an email service like sparkpost and done my substitutions through them. For the email html I used a template tool www.beefree.io. This is a plugin tool that I used at www.quorum.us to build their email tool. It does a nice job of handling different browsers.
+
+### Simple Improvements that would make this more fun to use
+- Embedding a drag-and-drop tool for clients to use to generate their own email. Allowing them to use more variables in their emails would be cool
+- Making this a single page application with react/redux. This application had no need for all of the boilerplate, but if you were building this out into a more fully featured tool that would be nice
+- Email unsubscribe feature - generate per subscriber hash that connects to a view that lets them unsubscribe
+- Email tracking analytics - it is easy to embed a 1x1 pixel to track opens, or use a service like sparkpost to do this.
