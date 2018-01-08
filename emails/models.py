@@ -88,17 +88,30 @@ class City(models.Model):
         return subject
 
     def make_body(self, report):
-        return ""
+        """ method that constructs the html of the email"""
+        body = ""
+        with open("../scripts/email.html") as f:
+            body = f.read().replace('\n', '')
 
+        # if I was using an email service like sparkpost or mailgun
+        # I would use their substitution dictionary
+        body = body.replace("{{icon_url}}", report.get("icon_url", ""))
+        body = body.replace("{{icon}}", report.get("icon", ""))
+        body = body.replace("{{location}}", report.get("location", ""))
+        body = body.replace("{{feels_like}}", report.get("feels_like", "N/A"))
+        body = body.replace("{{current_weather}}",
+                            report.get("current_weather", "N/A"))
+        body = body.replace("{{current_temp}}",
+                            report.get("temp_string", "N/A"))
+
+        return body
 
     def generate_email(self):
+        """ Function to generate an email"""
         report = self.get_weather()
         subject = self.make_subject(report)
         body = self.make_body(report)
         return subject, body
-
-
-
 
 
 class Subscriber(models.Model):
@@ -111,4 +124,5 @@ class Subscriber(models.Model):
     state = models.ForeignKey(State, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.email if self.is_valid else "Invalid: {}".format(self.email)
+        return self.email if self.is_valid \
+            else "Invalid: {}".format(self.email)

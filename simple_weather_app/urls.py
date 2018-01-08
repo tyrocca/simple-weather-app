@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.urls import include, path
+from django.shortcuts import redirect
 from django.contrib import admin
 
 urlpatterns = [
