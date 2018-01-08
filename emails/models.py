@@ -100,7 +100,7 @@ class City(models.Model):
         # I would use their substitution dictionary
         body = body.replace("{{icon_url}}", report.get("icon_url", ""))
         body = body.replace("{{icon}}", report.get("icon", ""))
-        body = body.replace("{{location}}", report.get("location", ""))
+        body = body.replace("{{location}}", self.__str__())
         body = body.replace("{{feels_like}}", report.get("feels_like", "N/A"))
         body = body.replace("{{current_weather}}",
                             report.get("current_weather", "N/A"))
@@ -112,7 +112,7 @@ class City(models.Model):
     def make_plaintext(self, report):
         """ method that generates the email plaintext """
         return "The weather in {} is {}. It feels like {}".format(
-            report.get("location", "your town"),
+            self.__str__(),
             report.get("temp_string", "N/A"),
             report.get("feels_like", "N/A"),
         )
