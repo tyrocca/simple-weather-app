@@ -51,11 +51,11 @@ class City(models.Model):
         """
         results = {}
         # if no people subscribe, then don't send a request (as we are limited)
-        # if self.subscriber_set.exists() is False:
-        #     return results
+        if self.subscriber_set.exists() is False:
+            return results
         # get the weather
         r = requests.get(self._get_weather_url()).json()
-        print(r)
+
         # if not a valid response, return the empty object
         if not r or "response" not in r or \
                 "almanac" not in r or \
@@ -93,7 +93,7 @@ class City(models.Model):
     def make_body(self, report):
         """ method that constructs the html of the email"""
         body = ""
-        with open("../scripts/email.html") as f:
+        with open("./scripts/email.html") as f:
             body = f.read().replace('\n', '')
 
         # if I was using an email service like sparkpost or mailgun
@@ -109,12 +109,21 @@ class City(models.Model):
 
         return body
 
+    def make_plaintext(self, report):
+        """ method that generates the email plaintext """
+        return "The weather in {} is {}. It feels like {}".format(
+            report.get("location", "your town"),
+            report.get("temp_string", "N/A"),
+            report.get("feels_like", "N/A"),
+        )
+
     def generate_email(self):
         """ Function to generate an email"""
         report = self.get_weather()
         subject = self.make_subject(report)
         body = self.make_body(report)
-        return subject, body
+        plaintext = self.make_plaintext(report)
+        return subject, body, plaintext
 
 
 class Subscriber(models.Model):
