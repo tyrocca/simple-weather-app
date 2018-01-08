@@ -26,4 +26,9 @@ If a user enters the same address multiple times this will only change the user'
 On the server side I have three models:
 - `Subscriber` - this model represents a subscriber. A subscriber has an email field, valid email field, a city field, and a state field. (As an extension I would have liked to make a unique key per subscriber for activating their email address, but this would have complicated me sending emails to klaviyo so I left it off. Ideally one would do this and prune emails that went unvalidated for a certain amount of time).
 - `State` - this represents a subscriber's state. I made this a model (although it could have also been an enum). This object could be useful if you were trying to target a specific subset of subscribers.
-- `City` - all the subscribers are tied to a city. I decided to add sending methods to this models to limit the number of requests being sent to wunderground. This way we only make a request to wunderground iff there are subscribers in that city. This makes it so we would only make about 100 requests to wunderground even if we had millions of subscribers.
+- `City` - all the subscribers are tied to a city. I decided to add sending methods to this models to limit the number of requests being sent to wunderground. This way we only make a request to wunderground iff there are subscribers in that city. This makes it so we would only make a max of 100 requests to wunderground even if we had millions of subscribers.
+
+### Sending Emails
+
+To send emails the user needs to send by running `python manage.py runscript send_emails`. This will send emails to all of the
+validated users. We only make one request per city and generate the email text once per city to be as efficient as possible. If we were scaling this up we could even use threads. I had to make a throwaway gmail account for sending these emails, but ideally I would have used an email service like sparkpost and done my substitutions through them.
