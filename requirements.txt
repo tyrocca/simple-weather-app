@@ -31,7 +31,7 @@ ply==3.10
 portend==2.2
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
-py==1.5.2
+py==1.10.0
 pycryptodome==3.4.7
 Pygments==2.2.0
 pytest==3.3.2
